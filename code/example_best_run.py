@@ -27,7 +27,6 @@ for i in range(0,len(chunks)):
         name="bat",
         description="test"
     )
-    print(record)
     sequences.append(record)  # add code here
 
 SeqIO.write(sequences, outDir+"example.fasta", "fasta")

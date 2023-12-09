@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 
 ##TODO: not specific for bat26, (this is for reads < 70bp)
 def mapFastatoBam(name, refname, outDir):
-    print(["bwa", "aln",outDir+refname, outDir+name+".fasta"])
     # Index the reference genome
     #gatk-launch CreateSequenceDictionary -R [genomeRefFasta] -> for vcf
     subprocess.run(["samtools", "faidx", outDir+refname])
@@ -47,7 +46,6 @@ def bamReads(bamfile, ad_st, ad_end, reflength,read_length, outDir):
     # Open the BAM file
     with pysam.AlignmentFile(bamfile, 'rb') as bf:
         # Iterate over reads in the BAM file
-        #print(len(bf.fetch()))
         for read in bf.fetch():
             read_name = read.query_name
             sequence = read.query_sequence
@@ -67,11 +65,7 @@ def calcReads(len_ad,ad_st, ad_end, positions, sequence):
     sequence= sequence[np.where((positions >= ad_st) & (positions <= ad_end))]
     if len(positions)!=0:
         for i in range(0, len(positions)):
-            print(i)
-            print(positions[i])
-            print(sequence[i])
             if sequence[i]=="A":
-                print("jo")
                 dep_arr[positions[i]-ad_st]=dep_arr[positions[i]-ad_st]+1
     return dep_arr
 
@@ -81,9 +75,7 @@ def calcReads(len_ad,ad_st, ad_end, positions, sequence):
 def calcCoverage(dep_arr, read_length, reflength):
     cov_arr=np.zeros(len(dep_arr))
     for i in range(0,len(dep_arr)):
-        print(dep_arr[i] * read_length / reflength)
         cov_arr[i]= dep_arr[i] * read_length / reflength
-    print(cov_arr)
     return cov_arr
 
 
