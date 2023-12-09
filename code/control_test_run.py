@@ -5,10 +5,10 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqIO
 
-outDir= "/home/marissa/Documents/sysmex/MSI/results/example_best/"
+outDir= "/home/marissa/Documents/sysmex/MSI/results/control_test/"
 ## create dummy test fasta file
 # shortage 5 "A"
-best_bat26="cccttaacctttttcaggtaaaaaaaaaaaaaaaaaaaaaagggttaaaaatgttgaatggttaaaaaatgtt"
+best_bat26="cccttaacctttttcaggtaaaaaaaaaaaaaaaaaaaaaaaaaaagggttaaaaatgttgaatggttaaaaaatgtt"
 chunks1 = [best_bat26[i:i+20] for i in range(0, len(best_bat26), 20)]
 chunks2 = [best_bat26[i:i+20] for i in range(2, len(best_bat26), 20)]
 chunks3 = [best_bat26[i:i+20] for i in range(4, len(best_bat26), 20)]
@@ -29,7 +29,7 @@ for i in range(0,len(chunks)):
     )
     sequences.append(record)  # add code here
 
-SeqIO.write(sequences, outDir+"example.fasta", "fasta")
+SeqIO.write(sequences, outDir+"control_test.fasta", "fasta")
 
 ## ref for bat26 fasta
 bat26_temp="cccttaacctttttcaggtaaaaaaaaaaaaaaaaaaaaaaaaaaagggttaaaaatgttgaatggttaaaaaatgtt"
@@ -42,7 +42,7 @@ record = SeqRecord(
 SeqIO.write(record, outDir+"bat26.fasta", "fasta")
 
 ### parameter
-input_fastq_file = outDir+"example.fasta"
+input_fastq_file = outDir+"control_test.fasta"
 bat26_temp="cccttaacctttttcaggtaaaaaaaaaaaaaaaaaaaaaaaaaaagggttaaaaatgttgaatggttaaaaaatgtt"
 bat26_start= 0
 bat26_end=78
@@ -52,7 +52,7 @@ read_length=20
 
 
 ## mapping 
-bamfile= mapFastatoBam("example", "bat26.fasta", outDir)
+bamfile= mapFastatoBam("control_test", "bat26.fasta", outDir)
 
 ## depth and cov calc for adenosin 
 dep, cov= bamReads(bamfile, ad_start, ad_end, len(bat26_temp),read_length, outDir)

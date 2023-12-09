@@ -29,7 +29,7 @@ def mapFastatoBam(name, refname, outDir):
     return outDir+name+".bam"
 
 ##3. select region
-## if map to human genome -> extracting the sam file to bat26 region 
+## if map to human genome -> extracting the sam/bam file to bat26 region (e.g. samtools view -b input.bam "Chr10:18000-45500" > output.bam)
 #(chr: bam_file.get_reference_name(read.reference_id), start: read.reference_start, end)
 
 
@@ -75,7 +75,7 @@ def calcReads(len_ad,ad_st, ad_end, positions, sequence):
 def calcCoverage(dep_arr, read_length, reflength):
     cov_arr=np.zeros(len(dep_arr))
     for i in range(0,len(dep_arr)):
-        cov_arr[i]= dep_arr[i] * read_length / reflength
+        cov_arr[i]= round(dep_arr[i] * read_length / reflength,1)
     return cov_arr
 
 
@@ -89,18 +89,24 @@ def calcCoverage(dep_arr, read_length, reflength):
 # e.g. depth: decision: region hast to have mind 5 reads
 ## e.g. coverage: decision:if in the position coverage <10% -> shortened
 def plotBar( ad_st, ad_end, yval, ylab, title,name,outDir):
+    
     xval= list(range(ad_st, ad_end))
     yval = list(yval)
-    fig = plt.figure(figsize = (10, 5))
+    #fig = plt.figure(figsize = (10, 5))
+
+
+    fig, ax = plt.subplots(figsize = (10, 5))
     # creating the bar plot
-    plt.bar(xval, yval, color ='maroon', 
-        width = 0.4)
-    plt.xlabel("Adenosin Positions")
-    plt.ylabel(ylab)
-    plt.title(title)
+    ax.bar(xval, yval, color ='maroon')
+    ax.set_xlabel("Adenosin Positions")
+    #ax.set_xlim(ad_st-1,ad_end)
+    ax.set_ylabel(ylab)
+    ax.set_title(title)
+
+    for i in range(0,len(yval)):
+        ax.text(xval[i]-0.5, yval[i], str(yval[i]))
     #plt.show()
     plt.savefig(outDir+name)
-
 
 
 ### illumina limitations: noise
